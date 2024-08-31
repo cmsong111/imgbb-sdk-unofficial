@@ -2,7 +2,7 @@ package io.github.cmsong111
 
 import com.google.gson.annotations.SerializedName
 
-data class ImgbbResult(
+data class ImgBBResult(
 
     @SerializedName("data") var data: Data? = Data(),
     @SerializedName("success") var success: Boolean? = null,

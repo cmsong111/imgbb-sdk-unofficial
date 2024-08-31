@@ -33,14 +33,7 @@ jobs:
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3
 
-#      - name: Import GPG key
-#        uses: crazy-max/ghaction-import-gpg@v6
-#        with:
-#          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-#          passphrase: ${{ secrets.PASSPHRASE }}
-
-
-      - name: Export secring.gpg
+      - name: Export secret key
         run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode > private.pgp
 
       - name: set gradle.properties

@@ -19,6 +19,8 @@ class ImgBBTest {
         val result = imageBB.uploadImage(file)
 
         Assertions.assertTrue(result.success!!)
+
+        println(result)
     }
 
     @Test
@@ -26,7 +28,21 @@ class ImgBBTest {
         val file = File(this.javaClass.getResource("/img/test_image.jpg")!!.file)
 
         Assertions.assertThrows(IllegalStateException::class.java) {
-            imageBB.uploadImage(file, -1)
+            imageBB.uploadImage(
+                image = file,
+                expiration = -1
+            )
         }
+    }
+
+    @Test
+    fun uploadImageWithName() {
+        val file = File(this.javaClass.getResource("/img/test_image.jpg")!!.file)
+        val result = imageBB.uploadImage(
+            image = file,
+            name = "test_test_test.jpg"
+        )
+
+        Assertions.assertTrue(result.success!!)
     }
 }
