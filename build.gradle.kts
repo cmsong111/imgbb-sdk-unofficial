@@ -1,12 +1,12 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
-    kotlin("jvm") version "2.0.0"
-    id("com.vanniktech.maven.publish") version "0.29.0"
+    kotlin("jvm") version "2.1.0"
+    id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
 group = "io.github.cmsong111"
-version = "0.0.2"
+version = "0.0.3"
 
 repositories {
     mavenCentral()
