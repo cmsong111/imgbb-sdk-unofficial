@@ -1,12 +1,18 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "1.9.25"
     id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
 group = "io.github.cmsong111"
-version = "0.0.3"
+version = "0.0.4"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
     mavenCentral()
@@ -14,20 +20,13 @@ repositories {
 
 dependencies {
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     // OkHttp
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
 }
 
 mavenPublishing {
@@ -46,8 +45,8 @@ mavenPublishing {
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
         developers {
@@ -63,4 +62,8 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://git@github.com/cmsong111/imgbb-sdk-unofficial.git")
         }
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

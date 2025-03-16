@@ -1,9 +1,7 @@
 import io.github.cmsong111.ImgBB
+import java.io.File
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-
-
-import java.io.File
 
 class ImgBBTest {
     /**
@@ -42,6 +40,14 @@ class ImgBBTest {
             image = file,
             name = "test_test_test.jpg"
         )
+
+        Assertions.assertTrue(result.success!!)
+    }
+
+    @Test
+    fun uploadImageByte() {
+        val file = File(this.javaClass.getResource("/img/test_image.jpg")!!.file)
+        val result = imageBB.uploadImage(file.readBytes())
 
         Assertions.assertTrue(result.success!!)
     }

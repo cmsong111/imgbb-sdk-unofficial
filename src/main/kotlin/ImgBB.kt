@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -32,7 +33,7 @@ class ImgBB(
         .client(okHttpClient)
         .build()
 
-    private val imgBBService = retrofit.create(ImgBBApi::class.java)
+    private val imgBBService = retrofit.create(ImgBBRetrofit::class.java)
 
 
     /**
@@ -42,7 +43,11 @@ class ImgBB(
      * @param name The name of the image(optional: if null the name of the file will be used)
      * @return The result of the upload
      */
-    fun uploadImage(image: File, name: String? = null, expiration: Long? = null): ImgBBResult {
+    fun uploadImage(
+        image: File,
+        name: String? = null,
+        expiration: Long? = null
+    ): ImgBBResult {
         val requestFile = image.asRequestBody("image/*".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData(
             "image", image.name, requestFile
@@ -51,6 +56,32 @@ class ImgBB(
         // Check File Size
         check(image.length() <= 32 * 1024 * 1024) { "File size must be less than or equal to 32MB" }
 
+
+        // Check expiration
+        if (expiration != null) {
+            check(expiration > 0) { "Expiration must be greater than 0" }
+            check(expiration <= 15552000) { "Expiration must be less than or equal to 15552000" }
+        }
+
+        return imgBBService.uploadImage(
+            image = imagePart,
+            expiration = expiration,
+            key = serviceKey,
+            name = name
+        ).execute().body()!!
+    }
+
+    fun uploadImage(
+        image: ByteArray,
+        name: String? = null,
+        expiration: Long? = null,
+    ): ImgBBResult {
+
+        val imagePart = MultipartBody.Part.createFormData(
+            name ?: "image",
+            "image",
+            image.toRequestBody("image/*".toMediaTypeOrNull(), 0, image.size) // InputStream → ByteArray
+        )
 
         // Check expiration
         if (expiration != null) {
